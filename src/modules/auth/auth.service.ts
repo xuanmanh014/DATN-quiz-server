@@ -11,7 +11,7 @@ export class AuthService {
     constructor(
         @InjectModel(User.name)
         private userModel: Model<UserDocument>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
     ) { }
 
     async loginUser(loginData: LoginUserDto): Promise<string> {
@@ -24,7 +24,11 @@ export class AuthService {
 
         const valid = await validatePassword(loginData.password, user.password);
         if (valid) {
-            const payload = { email, userFullName: `${user.firstName} ${user.lastName}` }
+            const payload = {
+                email,
+                userFullName: `${user.firstName} ${user.lastName}`,
+                phoneNumber: user.phoneNumber
+            }
             const token = await this.jwtService.signAsync(payload);
             return token;
         }

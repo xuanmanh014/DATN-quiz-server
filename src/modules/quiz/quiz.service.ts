@@ -16,7 +16,9 @@ export class QuizService {
         try {
             const newQuiz = new this.quizModel(createQuizDto);
 
-            newQuiz.quizRecord = createQuizDto.quizRecord;
+            if (createQuizDto.quizType === "listen") {
+                newQuiz.quizRecord = createQuizDto.quizRecord;
+            }
 
             await newQuiz.save();
 
@@ -30,7 +32,8 @@ export class QuizService {
         try {
             const quizs = await this.quizModel.find()
                 .populate([
-                    { path: "quizRecord", select: ["filePath", "fileName"] }
+                    { path: "quizRecord", select: ["filePath", "fileName"] },
+                    { path: "quizTopic" }
                 ]);
 
             return quizs;
@@ -43,7 +46,8 @@ export class QuizService {
         try {
             const quiz = await this.quizModel.findById(id)
                 .populate([
-                    { path: "quizRecord", select: ["filePath", "fileName"] }
+                    { path: "quizRecord", select: ["filePath", "fileName"] },
+                    { path: "quizTopic" }
                 ]);
 
             if (!quiz) throw new NotFoundException();

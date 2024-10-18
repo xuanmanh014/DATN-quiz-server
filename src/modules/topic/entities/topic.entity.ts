@@ -7,6 +7,9 @@ export type TopicDocument = Document & Topic;
 export class Topic {
     @Prop({ type: String, required: true })
     topicName?: string;
+
+    @Prop({ type: String })
+    topicDescriptions?: string;
 }
 
 export const TopicSchema = SchemaFactory.createForClass(Topic);

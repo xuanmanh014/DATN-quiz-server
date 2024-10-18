@@ -2,6 +2,7 @@ import {
     Controller,
     Body,
     Post,
+    BadRequestException,
 } from '@nestjs/common';
 import { LoginUserDto } from '../auth/dto/login-user.dto';
 import { AuthService } from './auth.service';
@@ -15,6 +16,10 @@ export class AuthController {
         @Body()
         loginData: LoginUserDto,
     ) {
-        return await this.service.loginUser(loginData);
+        const token = await this.service.loginUser(loginData);
+
+        if (!token) throw new BadRequestException();
+
+        return token;
     }
 }

@@ -11,7 +11,6 @@ export class CreateQuizDto {
     @IsNotEmpty({ message: "Please type quiz's score" })
     quizScore?: number
 
-    @IsNotEmpty({ message: "Please upload quiz's record" })
     quizRecord?: Upload
 
     @IsNotEmpty({ message: "Please choose quiz's topic" })

@@ -1,4 +1,4 @@
-import { Controller, Delete, Param, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { BadRequestException, Controller, Delete, Param, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { UploadService } from "./upload.service";
@@ -16,19 +16,14 @@ export class UploadController {
     @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor('file'))
     async uploadImage(@UploadedFile() file: Express.Multer.File): Promise<Response<Upload>> {
-        try {
-            const fileUpload = await this.uploadService.uploadFile(file);
+        const fileUpload = await this.uploadService.uploadFile(file);
 
-            return {
-                message: "Upload file success!",
-                data: fileUpload
-            };
-        } catch (error) {
-            return {
-                message: "Upload file failed!",
-                data: null
-            };
-        }
+        if (!fileUpload) throw new BadRequestException();
+
+        return {
+            message: "Upload file success!",
+            data: fileUpload
+        };
     }
 
     @Delete(":id")
