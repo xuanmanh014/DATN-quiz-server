@@ -2,6 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './exceptions/http-exception.filter';
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -9,6 +12,6 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe());
     app.enableCors({ origin: "*" });
     app.useGlobalFilters(new HttpExceptionFilter());
-    await app.listen(8888);
+    await app.listen(process.env.PORT || 8888);
 }
 bootstrap();

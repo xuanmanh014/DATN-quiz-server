@@ -6,10 +6,14 @@ import { UploadModule } from './modules/upload/upload.module';
 import { QuizModule } from './modules/quiz/quiz.module';
 import { TopicModule } from './modules/topic/topic.module';
 import { MailerModule } from './modules/mailer/mailer.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
-        MongooseModule.forRoot(`mongodb+srv://xuanmanh014:xuanmanh014@datn.4bo1z.mongodb.net/`),
+        ConfigModule.forRoot({
+            envFilePath: ['.env'],
+        }),
+        MongooseModule.forRoot(`mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@datn.4bo1z.mongodb.net/`),
         UserModule,
         AuthModule,
         UploadModule,
