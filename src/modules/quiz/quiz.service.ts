@@ -89,4 +89,25 @@ export class QuizService {
             return null;
         }
     }
+
+    async checkSegmentedAnswer(quizId: string, segmentIndex: number, userAnswer: string) {
+        const quiz = await this.quizModel.findById(quizId);
+
+        if (!quiz) throw new NotFoundException('Quiz not found');
+
+        const segment = quiz.segments[segmentIndex];
+        if (!segment) throw new NotFoundException('Segment not found');
+
+        const isCorrect = segment.answer.toLowerCase() === userAnswer.toLowerCase();
+        return { success: true, isCorrect };
+    }
+
+    async checkFullAudioAnswer(quizId: string, userAnswer: string) {
+        const quiz = await this.quizModel.findById(quizId);
+
+        if (!quiz) throw new NotFoundException('Quiz not found');
+
+        const isCorrect = quiz.quizAnswer.toLowerCase() === userAnswer.toLowerCase();
+        return { success: true, isCorrect };
+    }
 }

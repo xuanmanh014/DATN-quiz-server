@@ -75,4 +75,17 @@ export class QuizController {
             message: "Delete quiz success!"
         };
     }
+
+    @Post(':id/answer-segment')
+    async submitSegmentedAnswer(
+        @Param('id') id: string,
+        @Body() { segmentIndex, answer }: { segmentIndex: number; answer: string }
+    ) {
+        return await this.quizService.checkSegmentedAnswer(id, segmentIndex, answer);
+    }
+
+    @Post(':id/answer-full')
+    async submitFullAnswer(@Param('id') id: string, @Body() { answer }: { answer: string }) {
+        return await this.quizService.checkFullAudioAnswer(id, answer);
+    }
 }

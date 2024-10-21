@@ -5,6 +5,12 @@ import { Topic } from "../../topic/entities/topic.entity";
 
 export type QuizDocument = Document & Quiz;
 
+export interface ISegment {
+    startTime?: number
+    endTime?: number
+    answer?: string
+}
+
 @Schema()
 export class Quiz {
     @Prop({ type: String, required: true })
@@ -24,6 +30,12 @@ export class Quiz {
 
     @Prop({ type: String, required: true })
     quizType?: string;
+
+    @Prop({ type: Boolean, required: false })
+    isSegmented?: boolean;
+
+    @Prop({ type: [{ startTime: Number, endTime: Number, answer: String }] })
+    segments?: ISegment[];
 }
 
 export const QuizSchema = SchemaFactory.createForClass(Quiz);
