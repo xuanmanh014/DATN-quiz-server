@@ -26,13 +26,13 @@ export class QuizController {
 
     @Get()
     async findAll(): Promise<Response<Quiz[]>> {
-        const quizs = await this.quizService.findAll();
+        const quizzes = await this.quizService.findAll();
 
-        if (!quizs) throw new BadRequestException();
+        if (!quizzes) throw new BadRequestException();
 
         return {
-            data: quizs,
-            message: "Get all quizs success!"
+            data: quizzes,
+            message: "Get all quizzes success!"
         };
     }
 
@@ -87,5 +87,17 @@ export class QuizController {
     @Post(':id/answer-full')
     async submitFullAnswer(@Param('id') id: string, @Body() { answer }: { answer: string }) {
         return await this.quizService.checkFullAudioAnswer(id, answer);
+    }
+
+    @Get("by-topic/:topic")
+    async findAllByTopic(@Param('topic') topic: string): Promise<Response<Quiz[]>> {
+        const quizzes = await this.quizService.findByTopic(topic);
+
+        if (!quizzes) throw new BadRequestException();
+
+        return {
+            data: quizzes,
+            message: "Get all quizzes success!"
+        };
     }
 }

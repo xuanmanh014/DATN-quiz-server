@@ -30,13 +30,13 @@ export class QuizService {
 
     async findAll(): Promise<Quiz[]> {
         try {
-            const quizs = await this.quizModel.find()
+            const quizzes = await this.quizModel.find()
                 .populate([
                     { path: "quizRecord", select: ["filePath", "fileName"] },
                     { path: "quizTopic" }
                 ]);
 
-            return quizs;
+            return quizzes;
         } catch (error) {
             return null;
         }
@@ -109,5 +109,21 @@ export class QuizService {
 
         const isCorrect = quiz.quizAnswer.toLowerCase() === userAnswer.toLowerCase();
         return { success: true, isCorrect };
+    }
+
+    async findByTopic(topicName: string): Promise<Quiz[]> {
+        try {
+            const quizzes = await this.quizModel.find()
+                .populate([
+                    { path: "quizRecord", select: ["filePath", "fileName"] },
+                    { path: "quizTopic" }
+                ]);
+
+            const quizzesByTopic = quizzes.filter(quiz => quiz.quizTopic.topicName.toLowerCase().split(" ").join("") === topicName.split("-").join(""));
+
+            return quizzesByTopic;
+        } catch (error) {
+            return null;
+        }
     }
 }
