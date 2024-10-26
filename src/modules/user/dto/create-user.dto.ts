@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length, IsString, IsEmail } from 'class-validator';
+import { IsNotEmpty, Length, IsString, IsEmail, IsDate } from 'class-validator';
 
 export class CreateUserDto {
     @IsNotEmpty({ message: 'Please Enter First Name' })
@@ -21,4 +21,7 @@ export class CreateUserDto {
     password: string;
 
     roles: string[];
+    createdAt: Date;
+    updatedAt: Date;
+    passwordUpatedAt: Date;
 }

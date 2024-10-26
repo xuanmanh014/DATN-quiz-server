@@ -22,6 +22,15 @@ export class User {
 
     @Prop({ default: ["user"], type: [String] })
     roles: string[];
+
+    @Prop({ type: Date })
+    createdAt: Date;
+
+    @Prop({ type: Date })
+    updatedAt: Date;
+
+    @Prop({ type: Date })
+    passwordUpatedAt: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

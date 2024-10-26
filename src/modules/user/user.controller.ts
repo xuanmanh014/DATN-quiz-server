@@ -7,6 +7,8 @@ import {
     Get,
     UseInterceptors,
     Delete,
+    NotFoundException,
+    BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -21,33 +23,25 @@ export class UserController {
     @Get()
     @UseInterceptors(TransformInterceptor)
     async getUsers(): Promise<Response<User[]>> {
-        try {
-            const users = await this.service.getUsers();
-            return {
-                message: "Get all user success!",
-                data: users,
-            }
-        } catch (error) {
-            return {
-                message: "Get all user failed!",
-                data: [],
-            }
+        const users = await this.service.getUsers();
+
+        if (!users) throw new BadRequestException();
+
+        return {
+            message: "Get all user success!",
+            data: users,
         }
     }
 
     @Get(":id")
     async getUser(@Param("id") id: string): Promise<Response<User>> {
-        try {
-            const user = await this.service.getUser(id);
-            return {
-                message: "Get user success!",
-                data: user
-            }
-        } catch (error) {
-            return {
-                message: "Get user success!",
-                data: null
-            }
+        const user = await this.service.getUser(id);
+
+        if (!user) throw new NotFoundException();
+
+        return {
+            message: "Get user success!",
+            data: user
         }
     }
 
@@ -57,17 +51,13 @@ export class UserController {
         @Body()
         user: CreateUserDto,
     ): Promise<Response<User>> {
-        try {
-            const newUser = await this.service.createUser(user);
-            return {
-                message: "Create user success!",
-                data: newUser
-            }
-        } catch (error) {
-            return {
-                message: "Create user failed!",
-                data: null
-            }
+        const newUser = await this.service.createUser(user);
+
+        if (!newUser) throw new BadRequestException();
+
+        return {
+            message: "Create user success!",
+            data: newUser
         }
     }
 
@@ -78,18 +68,13 @@ export class UserController {
         @Body()
         user: UpdateUserDto,
     ): Promise<Response<UpdateUserDto>> {
-        try {
-            const updatedUser = await this.service.updateUser(id, user);
+        const updatedUser = await this.service.updateUser(id, user);
 
-            return {
-                message: "Update user success!",
-                data: updatedUser,
-            }
-        } catch (error) {
-            return {
-                message: "Update user failed!",
-                data: null,
-            }
+        if (!updatedUser) throw new BadRequestException();
+
+        return {
+            message: "Update user success!",
+            data: updatedUser,
         }
     }
 
@@ -98,18 +83,13 @@ export class UserController {
         @Param("id")
         id: string
     ) {
-        try {
-            const deletedUser = await this.service.deleteUser(id);
+        const deletedUser = await this.service.deleteUser(id);
 
-            return {
-                message: "Delete user success!",
-                data: deletedUser,
-            }
-        } catch (error) {
-            return {
-                message: "Delete user failed!",
-                data: null,
-            }
+        if (!deletedUser) throw new BadRequestException();
+
+        return {
+            message: "Delete user success!",
+            data: null,
         }
     }
 }
