@@ -40,7 +40,7 @@ export class UserService {
             const newUser = new this.userModel({ ...user, password });
             const now = new Date();
             const eightDaysAgo = new Date(now);
-            eightDaysAgo.setDate(now.getDate() - 8);
+            eightDaysAgo.setDate(now.getDate() - 4);
 
             newUser.createdAt = now;
             newUser.updatedAt = now;

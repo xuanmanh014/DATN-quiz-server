@@ -11,6 +11,5 @@ export class UpdateQuizDto extends PartialType(CreateQuizDto) {
     quizAnswer?: string
     quizType?: string
     quizTopic?: Topic
-    isSegmented?: boolean;
-    segments?: ISegment[];
+    segments?: ISegment[]
 }

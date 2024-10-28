@@ -40,35 +40,34 @@ export class AuthService {
     }
 
     async changePassword(id: string, values: EditPasswordDto): Promise<string> {
-        try {
-            const user = await this.userModel.findById(id);
-            const now = new Date();
-            const passwordUpatedAt = new Date(user.passwordUpatedAt);
-            const diff = (now.getTime() - passwordUpatedAt.getTime()) / (1000 * 60 * 60 * 24);
+        const user = await this.userModel.findById(id);
+        const now = new Date();
+        const passwordUpatedAt = new Date(user.passwordUpatedAt);
+        const diff = (now.getTime() - passwordUpatedAt.getTime()) / (1000 * 60 * 60 * 24);
 
-            if (diff < 7) throw new BadRequestException("Only can update your password after 7 days");
+        if (diff < 3) throw new BadRequestException("Only can update your password after 3 days", {
+            cause: new Error(),
+            description: 'Some error description',
+        });
 
-            if (!user) {
-                throw new UnauthorizedException("User does not exist!");
-            }
-
-            const isRepeat = await validatePassword(values.currentPass, values.newPass);
-
-            if (isRepeat) throw new BadRequestException("New password should not be the same with current password!");
-
-            const valid = await validatePassword(values.currentPass, user.password);
-
-            if (valid) {
-                const newPass = await hashPassword(values.newPass);
-
-                await this.userModel.findByIdAndUpdate(id, { password: newPass, passwordUpatedAt: new Date() }, { new: true });
-
-                return "Change password success!";
-            }
-
-            throw new UnauthorizedException("Current password is invalid!");
-        } catch (error) {
-            return null;
+        if (!user) {
+            throw new UnauthorizedException("User does not exist!");
         }
+
+        const isRepeat = await validatePassword(values.currentPass, values.newPass);
+
+        if (isRepeat) throw new BadRequestException("New password should not be the same with current password!");
+
+        const valid = await validatePassword(values.currentPass, user.password);
+
+        if (valid) {
+            const newPass = await hashPassword(values.newPass);
+
+            await this.userModel.findByIdAndUpdate(id, { password: newPass, passwordUpatedAt: new Date() }, { new: true });
+
+            return "Change password success!";
+        }
+
+        throw new UnauthorizedException("Current password is invalid!");
     }
 }

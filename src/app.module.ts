@@ -7,6 +7,7 @@ import { QuizModule } from './modules/quiz/quiz.module';
 import { TopicModule } from './modules/topic/topic.module';
 import { MailerModule } from './modules/mailer/mailer.module';
 import { ConfigModule } from '@nestjs/config';
+import { FavouriteQuizModule } from './modules/favourite-quiz/favourite-quiz.module';
 
 @Module({
     imports: [
@@ -20,7 +21,8 @@ import { ConfigModule } from '@nestjs/config';
         QuizModule,
         TopicModule,
         MailerModule,
-        MailerModule
+        MailerModule,
+        FavouriteQuizModule
     ],
 })
 export class AppModule { }

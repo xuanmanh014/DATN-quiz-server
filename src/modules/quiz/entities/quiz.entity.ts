@@ -31,9 +31,6 @@ export class Quiz {
     @Prop({ type: String, required: true })
     quizType?: string;
 
-    @Prop({ type: Boolean, required: false })
-    isSegmented?: boolean;
-
     @Prop({ type: [{ startTime: Number, endTime: Number, answer: String }] })
     segments?: ISegment[];
 }
