@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Upload, UploadDocument } from './entities/upload.entity';
 import { Model } from 'mongoose';
-import { bucket } from '../../firebase/firebaseAdmin';
 import * as admin from 'firebase-admin';
 import { Response } from '../../interceptors/transform.interceptors';
+import { firebaseAdmin } from '../../firebase/firebaseAdmin';
 
 @Injectable()
 export class UploadService {
@@ -13,22 +13,24 @@ export class UploadService {
         private uploadModel: Model<UploadDocument>
     ) { }
 
+    private bucket = firebaseAdmin.storage().bucket();
+
     async uploadFile(file: Express.Multer.File): Promise<Upload> {
         const fileName = `${Date.now()}-${file.originalname}`;
-        const fileUpload = bucket.file(fileName);
+        const fileUpload = this.bucket.file(fileName);
 
         try {
             await fileUpload.save(file.buffer, {
                 contentType: file.mimetype,
             });
-            const url = await fileUpload.getSignedUrl({
-                action: 'read',
-                expires: '03-01-2500',
-            });
+
+            await fileUpload.makePublic();
+
+            const url = fileUpload.publicUrl();
 
             const fileUploaded = new this.uploadModel({
                 fileName,
-                filePath: url[0],
+                filePath: url,
                 fileSize: file.size,
                 fileType: file.mimetype
             });

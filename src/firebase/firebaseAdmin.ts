@@ -1,22 +1,12 @@
-import admin, { ServiceAccount } from 'firebase-admin';
-
-const serviceAccount = {
-    "type": "service_account",
-    "project_id": "datn-f1240",
-    "private_key_id": "3728982afac9d3bb409356ad953d43dbf7b6707c",
-    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCSZ2RGfagAFhDH\nUKjO9xH2LAIL3XncD6EynYxoG4Q3mH7FSrxVCojTakiuUqTgKU7RXtBgIOhOF1Ge\nVOjkWuwzYUPDUJRyPAIk24ebvoCZmKg/+uzXj2ZW7yL2NvRwED4CCayAToq6F39X\nEqpaO7QdNRuExrKorwyMyA4W7UnAJPafCrbdsalfqzGEvC7pRufm+PqaG/T4SdfG\n9Ugvt9hvPgSwJ3SCEBU6H36NlvD/rMkVNsYifxxHQE618fm6aPWzn+aNQxPIs3Kc\nil27+VH30R8vqqNXLfVW8rjmlIKYh/RxS610MH83rTTiFs3IaRdxCoepqQpPEmRP\n6ukSCKd1AgMBAAECggEAAJEpncOcfszsaWE3binIe4bFxpb9Lawv0yWHZtsobXCy\nmQAGRQwNO0hk71aUReaoY/41L2d2juA0lDjpoqzJemoiMY5NLONs8giZo1xJsjlE\nTuR2vgpTpVA4IfJU4F7nu+lJWOvfn1iPnojiI7Gp1m0fZf8WWmSR11+/p44UDuGe\n7x6fAwkOhLNz2JEZK7YGZE9ZYASiQrSB1RGp4n3roGKA44x7FuXTl3jst8Plu3NK\nZ4M+gfreDhR1GgOK/YX4fsmN4IBoCHtAOWxGuZsrQFm3zZzNthzvUjLQ8LaT0/iP\nov9cl2cEQVi8w13dCkafKTcFFnxmYyHfMdMg85nzYQKBgQDMMWamxytOGa+aWZ0J\nhbXTIm0CEs2NPK0WjKWXvBqChxam5zLgXdNbzEnq+Wds+V44xg+jhUso7+8DOnLo\nisYYUT6eSIDDZUtjRY9NJY3MK1XW5ZXQD3A3fjUF5nsixfEPGzAi8vOk52PEq4mY\nX8vFUpmrMXoBxZTN5M+/z6liBQKBgQC3jIN9MCxf41f+BQWGZpAjDcI+wXTI4gC6\n7oHTl/NHJLPy/uAZuhbqNa0LESC5933xfr2N9xaq8p6Z10ugquKNSBuyG8uxJxy3\na/3F6AzdL4RfUgq/3bKLyiWbRSp6VPhyeOdX+tNNQauo7CDikXcPYlWpXU0/zlBg\nxIooWtf6sQKBgHt4v9bHhsMiOxI9b/0LEmiKX5oqXosyDoQdJiC7iNg28ZaZJSWQ\n9raCsIvaphS6MaRo95nshwdJFqFAHa3KBIE913yE4P/GZ7CupjmDJNw5tB1PFKkM\nPNIBifR4aysawGpfCVuIx5WGqciJ5ZjzDFfUW8GuGFWr8RATdSBKZOU1AoGBAK7p\nW2BQKOlTp8WtGV/DmzWcZfARwO2x2UpKATQXiEDSrB0zX3GE0VNtxTJXpx0wyTb6\nNT71KQfM3vDxpuM8FVrXTXVEYa62+/mbEqGnCaM6JeYEM7Q1W3E1OPMnTVx4Xq4P\noz5HC1eC7keyhYADaTci2UjlXbkhLZ2ZjaL5NvpxAoGAEBkES2hrr7HuHU9YjOGa\ndPDM4Qm0sPKHWlSBDRuoUIlX2Cxcfi0/sbbCJhuzZf6JwvtXSpmvUySCeqOU8wA4\nJZGk8OVGp9OLHP1gosSMxkS7jGtgZFwxC4ZuBSCdSo4CpBDqvbNbioWsK/kpsl2P\nMEp/bUK/BV26Kcy/AlUozuA=\n-----END PRIVATE KEY-----\n",
-    "client_email": "firebase-adminsdk-qv00l@datn-f1240.iam.gserviceaccount.com",
-    "client_id": "105568623640200469810",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-qv00l%40datn-f1240.iam.gserviceaccount.com",
-    "universe_domain": "googleapis.com"
-} as ServiceAccount
+import * as admin from 'firebase-admin';
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert({
+        projectId: "datn-f1240",
+        clientEmail: "firebase-adminsdk-qv00l@datn-f1240.iam.gserviceaccount.com",
+        privateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCxbmzDhfMatESa\nVp5gjvHenr5aCf6+DA8AVp8WIFLbrmiPTiOH+WuVhRA8GeSja3P35iBUe2h/7qrb\nhSu4d7b0KrEnhE1XpjsQn/BOPS7UIqqrqhimG+uJnyYpV2KD+zGw+WQtEz2YDEmP\nefu+HQp5ocGkGIa5ur3A57tTosnS7vS5pKOSSiH/KF4bJFvLvANKRHNJwM3WAttf\n48Ozj/WJmUkYaSzTfsTnRfi6nqG8mqyiktkXfmxgEJYXOfjBHw3I1fE5wRI4j17c\nC8IsJ2fVaiS/pGagj2R+OT05S/ULy3+t3cbQjOIJtnrc/hvuJYBeh3ophj2wSJHo\nmJtTHDYrAgMBAAECggEAO/+0zMtTgVC7MBuhU9KSrK6ufMELgRWPzxP7mN5WVo4c\nMnWAY18vB7Em48P3wmE4JniNrzPKCxTYdwIJ3kexONDk9hFxm/WM3JrRBov+9WJB\np2oOCsG/PNrx6yHvIOVFEOzMeMecWPmyuE9OFyQ34hiWZBidGloxB3X1LRuLtwVh\nBMhCf1BqNoue7/WI48O1l6CbjKP3yXCQ0tVytEqZwtoUdp6uIvNMvIuJH0/YPahb\nYs/uHt7BXg3sdG43PSkVRUIJs+OfTimxr+DZDps3HbIcqkWj3FMicMqCUrsu7bnx\nbJULCVLjRYNEVQGTZprcrvrivcQbqWeBgfaQeiVEDQKBgQDtfqRVXhfndAuHOq8C\nNLC0aaGaUS+aFgdt4SGFkuonzRXcdc1Et/tOHYHCTiIb/Sy7RVfvV95Zv0uq3XeX\nFW2WiBPoAN9RMvFxHFdlaWM05pp4mCVEVX3DDoadbCXaiRPL8Wl9B4QOGPFVY7PZ\nOPSEmYCzXN2HGvs6AM1qqzhUDQKBgQC/Qa+zgqBmw2TPxBCiNJnAin5pcA/pf17D\nKae+MmwInvvPpampYAy5K8dBJrKxYj9lMg7rcuygxa9FZ5Oc8XSGvtV9Q6fcb7Bs\nq7tCZpH52JbStASTe01vjrnQUijFJsBUUecqy0JQKsyHlXclL4fqztgxO9sr2Ulz\nltEATegNFwKBgGFk2geYOr1UPZYLXtHMwdp6pycdvCO4fPt2o8SfZx9DX3+1X6Sa\nvpheSWRhnmNUBBAYc+NXaXvskx9TC0QOKY7d5yvxj6NA/Pqh4MVZ3rFHEHn8Cuxn\nEtf3EQVl4HAqXs/4BIadmm4dlHqsFIk0bjIisUDdCIvraLN0uMjRxpvRAoGAIymf\ndQByHxKTaUNhz4CeN/D+dsIcmtBJCtaQuX4psJgSMcYCYFqBXFX5JzhHKCepAiDm\n71DMwm414Cu/zt3xj4hsVcBnjzaVmBUms3mKIwY4DHr+UGMeBIGYFf3U8xJBz/7S\n4mJGSdjki5TmN9b6RShMRRj9HZ2wTGkQ+d5Y6HcCgYA3Q0vNawqfOaimMCBnJhhL\nDRMfBGodPmmcDSqnvoIx167fT14LitVqiq1oYBnY7AWFOg6hkxL7caohsQz8A7KF\nNEF5u1KPOvztY8jiIfLXugurUSsdBEinPC8fN2ocgYboFtv8VxjVHXlY1P0PkFwL\n9fSYsY68Jb1ot4iz8jeY+Q==\n-----END PRIVATE KEY-----\n",
+    }),
     storageBucket: 'gs://datn-f1240.appspot.com',
 });
 
-export const bucket = admin.storage().bucket();
+export const firebaseAdmin = admin;
