@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, BadRequestException } from '@nestjs/common';
 import { FavouriteQuizService } from './favourite-quiz.service';
 import { CreateFavouriteQuizDto } from './dto/create-favourite-quiz.dto';
-import { Response, TransformInterceptor } from '../../interceptors/transform.interceptors';
-import { AuthGuard } from '../auth/auth-guard';
+import { Response, TransformInterceptor } from '../../common/interceptors/transform.interceptors';
 import { FavouriteQuiz } from './entities/favourite-quiz.entity';
+import { AuthGuard } from '../../common/guards/auth.guard';
 
 @Controller('favourite-quiz')
 export class FavouriteQuizController {

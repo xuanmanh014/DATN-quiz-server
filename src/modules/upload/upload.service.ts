@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Upload, UploadDocument } from './entities/upload.entity';
 import { Model } from 'mongoose';
 import * as admin from 'firebase-admin';
-import { Response } from '../../interceptors/transform.interceptors';
+import { Response } from '../../common/interceptors/transform.interceptors';
 import { firebaseAdmin } from '../../firebase/firebaseAdmin';
 
 @Injectable()
@@ -43,7 +43,7 @@ export class UploadService {
         }
     }
 
-    async deleteFile(id: string): Promise<Response<Upload>> {
+    async deleteFile(id: string): Promise<Upload> {
         try {
             const existFile = await this.uploadModel.findById(id);
 
@@ -58,15 +58,9 @@ export class UploadService {
 
             const deletedFile = await this.uploadModel.findByIdAndDelete({ _id: id });
 
-            return {
-                message: "Delete file success!",
-                data: deletedFile
-            };
+            return deletedFile
         } catch (error) {
-            return {
-                message: "Delete file failed!",
-                data: null
-            };
+            throw new BadGatewayException();
         }
     }
 }

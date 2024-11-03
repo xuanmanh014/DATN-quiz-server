@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, BadRequestException, Query } from '@nestjs/common';
 import { QuizService } from './quiz.service';
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
-import { AuthGuard } from '../auth/auth-guard';
-import { Response, TransformInterceptor } from '../../interceptors/transform.interceptors';
+import { Response, TransformInterceptor } from '../../common/interceptors/transform.interceptors';
 import { Quiz } from './entities/quiz.entity';
+import { AuthGuard } from '../../common/guards/auth.guard';
+import { GetDto } from '../../common/dtos/get.dto';
+import { GetResponseDto } from '../../common/dtos/response.dto';
 
 @Controller('quiz')
 export class QuizController {
@@ -25,8 +27,8 @@ export class QuizController {
     }
 
     @Get()
-    async findAll(): Promise<Response<Quiz[]>> {
-        const quizzes = await this.quizService.findAll();
+    async findAll(@Query() query: GetDto): Promise<Response<GetResponseDto<Quiz[]>>> {
+        const quizzes = await this.quizService.findAll(query);
 
         if (!quizzes) throw new BadRequestException();
 
@@ -90,8 +92,8 @@ export class QuizController {
     }
 
     @Get("by-topic/:topic")
-    async findAllByTopic(@Param('topic') topic: string): Promise<Response<Quiz[]>> {
-        const quizzes = await this.quizService.findByTopic(topic);
+    async findAllByTopic(@Param('topic') topic: string, @Query() query: GetDto): Promise<Response<GetResponseDto<Quiz[]>>> {
+        const quizzes = await this.quizService.findByTopic(topic, query);
 
         if (!quizzes) throw new BadRequestException();
 

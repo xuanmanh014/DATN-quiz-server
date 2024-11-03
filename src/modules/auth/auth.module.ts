@@ -3,8 +3,8 @@ import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
-import { jwtConstants } from "./constants";
 import { User, UserSchema } from "../user/entities/user.entity";
+import { jwtConstants } from "../../constants/constants";
 
 @Module({
     imports: [

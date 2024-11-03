@@ -14,7 +14,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { Response, TransformInterceptor } from '../../interceptors/transform.interceptors';
+import { Response, TransformInterceptor } from '../../common/interceptors/transform.interceptors';
 
 @Controller("user")
 export class UserController {

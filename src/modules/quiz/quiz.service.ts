@@ -1,9 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Quiz, QuizDocument } from './entities/quiz.entity';
 import { Model } from 'mongoose';
+import { GetDto } from '../../common/dtos/get.dto';
+import { GetResponseDto } from '../../common/dtos/response.dto';
 
 @Injectable()
 export class QuizService {
@@ -24,21 +26,46 @@ export class QuizService {
 
             return newQuiz;
         } catch (error) {
-            return null;
+            throw new BadRequestException();
         }
     }
 
-    async findAll(): Promise<Quiz[]> {
+    async findAll(query: GetDto): Promise<GetResponseDto<Quiz[]>> {
         try {
+            const { search, sortBy, order, page = 1, limit = 10 } = query;
+            const filters: any = {};
+            const sortOptions = {};
+            const skip = (page - 1) * limit;
+
+            if (search) {
+                filters.name = { $regex: search, $options: 'i' };
+            }
+
+            if (sortBy) {
+                sortOptions[sortBy] = order === 'desc' ? -1 : 1;
+            }
+
             const quizzes = await this.quizModel.find()
                 .populate([
                     { path: "quizRecord", select: ["filePath", "fileName"] },
                     { path: "quizTopic" }
-                ]);
+                ])
+                .find(filters)
+                .sort(sortOptions)
+                .skip(skip)
+                .limit(limit)
+                .exec();
 
-            return quizzes;
+            const totalItems = await this.quizModel.countDocuments(filters);
+
+            return {
+                data: quizzes,
+                totalItems,
+                totalPages: Math.ceil(totalItems / limit),
+                currentPage: page,
+            };
         } catch (error) {
-            return null;
+            throw new BadRequestException();
         }
     }
 
@@ -54,7 +81,7 @@ export class QuizService {
 
             return quiz;
         } catch (error) {
-            return null;
+            throw new BadRequestException();
         }
     }
 
@@ -72,7 +99,7 @@ export class QuizService {
 
             return updatedQuiz;
         } catch (error) {
-            return null;
+            throw new BadRequestException();
         }
     }
 
@@ -86,7 +113,7 @@ export class QuizService {
 
             return deletedQuiz;
         } catch (error) {
-            return null;
+            throw new BadRequestException();
         }
     }
 
@@ -111,19 +138,44 @@ export class QuizService {
         return { success: true, isCorrect };
     }
 
-    async findByTopic(topicName: string): Promise<Quiz[]> {
+    async findByTopic(topicName: string, query: GetDto): Promise<GetResponseDto<Quiz[]>> {
         try {
+            const { search, sortBy, order, page = 1, limit = 10 } = query;
+            const filters: any = {};
+            const sortOptions = {};
+            const skip = (page - 1) * limit;
+
+            if (search) {
+                filters.quizName = { $regex: search, $options: 'i' };
+            }
+
+            if (sortBy) {
+                sortOptions[sortBy] = order === 'desc' ? -1 : 1;
+            }
+
             const quizzes = await this.quizModel.find()
                 .populate([
                     { path: "quizRecord", select: ["filePath", "fileName"] },
                     { path: "quizTopic" }
-                ]);
+                ])
+                .find(filters)
+                .sort(sortOptions)
+                .skip(skip)
+                .limit(limit)
+                .exec();
 
-            const quizzesByTopic = quizzes.filter(quiz => quiz.quizTopic.topicName.toLowerCase().split(" ").join("") === topicName.split("-").join(""));
+            const quizzesByTopic = quizzes.filter(quiz => quiz.quizTopic.topicName.toLowerCase().split(" ").join("") === topicName.split("-").join(""))
 
-            return quizzesByTopic;
+            const totalItems = await this.quizModel.countDocuments(filters);
+
+            return {
+                data: quizzesByTopic,
+                totalItems,
+                totalPages: Math.ceil(totalItems / limit),
+                currentPage: page,
+            };
         } catch (error) {
-            return null;
+            throw new BadRequestException();
         }
     }
 }

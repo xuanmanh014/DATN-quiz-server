@@ -1,17 +1,16 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, BadRequestException } from '@nestjs/common';
 import { CreateTopicDto } from './dto/create-topic.dto';
 import { UpdateTopicDto } from './dto/update-topic.dto';
-import { AuthGuard } from '../auth/auth-guard';
-import { Response, TransformInterceptor } from '../../interceptors/transform.interceptors';
+import { Response, TransformInterceptor } from '../../common/interceptors/transform.interceptors';
 import { Topic } from './entities/topic.entity';
 import { TopicService } from './topic.service';
+import { AuthGuard } from '../../common/guards/auth.guard';
 
 @Controller('topic')
 export class TopicController {
     constructor(private readonly topicService: TopicService) { }
 
     @Post()
-    @UseGuards(AuthGuard)
     @UseInterceptors(TransformInterceptor)
     async create(@Body() createTopicDto: CreateTopicDto): Promise<Response<Topic>> {
         const newTopic = await this.topicService.create(createTopicDto);

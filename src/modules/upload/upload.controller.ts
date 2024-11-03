@@ -2,9 +2,9 @@ import { BadRequestException, Controller, Delete, Param, Post, UploadedFile, Use
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { UploadService } from "./upload.service";
-import { Response } from "../../interceptors/transform.interceptors";
+import { Response } from "../../common/interceptors/transform.interceptors";
 import { Upload } from "./entities/upload.entity";
-import { AuthGuard } from "../auth/auth-guard";
+import { AuthGuard } from "../../common/guards/auth.guard";
 
 @Controller('upload')
 export class UploadController {
@@ -32,7 +32,7 @@ export class UploadController {
         try {
             const deletedFile = await this.uploadService.deleteFile(id);
 
-            if (!deletedFile.data) {
+            if (!deletedFile) {
                 throw new Error("Delete file failed!");
             }
 
