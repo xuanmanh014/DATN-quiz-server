@@ -28,6 +28,8 @@
         "@nestjs/mapped-types": "*",
         "@nestjs/mongoose": "^10.0.10",
         "@nestjs/platform-express": "^10.0.0",
+        "@nestjs/platform-socket.io": "^10.4.7",
+        "@nestjs/websockets": "^10.4.7",
         "@types/mongoose": "^5.11.97",
         "bcrypt": "^5.1.1",
         "class-transformer": "^0.5.1",
