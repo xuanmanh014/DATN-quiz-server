@@ -9,6 +9,7 @@ import { MailerModule } from './modules/mailer/mailer.module';
 import { ConfigModule } from '@nestjs/config';
 import { FavouriteQuizModule } from './modules/favourite-quiz/favourite-quiz.module';
 import { OnlineTimeModule } from './web-socket/online-time/online-time.module';
+import { QuizCommentsModule } from './modules/quiz-comments/quiz-comments.module';
 
 @Module({
     imports: [
@@ -24,7 +25,8 @@ import { OnlineTimeModule } from './web-socket/online-time/online-time.module';
         MailerModule,
         MailerModule,
         FavouriteQuizModule,
-        OnlineTimeModule
+        OnlineTimeModule,
+        QuizCommentsModule
     ],
 })
 export class AppModule { }
