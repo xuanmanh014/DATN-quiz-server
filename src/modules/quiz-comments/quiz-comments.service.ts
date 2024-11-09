@@ -4,6 +4,7 @@ import { UpdateQuizCommentDto } from './dto/update-quiz-comment.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { QuizComment, QuizCommentDocument } from './entities/quiz-comment.entity';
 import { Model } from 'mongoose';
+import { GetQuizDto } from './dto/get-quiz-comment.dto';
 
 @Injectable()
 export class QuizCommentsService {
@@ -21,8 +22,9 @@ export class QuizCommentsService {
         return newComment;
     }
 
-    async findAllByQuiz(quizId: string): Promise<QuizComment[]> {
-        const comments = await this._model.find({ quiz: quizId })
+    async findAllByQuizAndSegmentIndex(params: GetQuizDto): Promise<QuizComment[]> {
+        const { quizId, quizSegmentIndex } = params;
+        const comments = await this._model.find({ quiz: quizId, quizSegmentIndex })
             .populate([
                 { path: "author", select: ["firstName", "lastName", "email"] },
             ]);

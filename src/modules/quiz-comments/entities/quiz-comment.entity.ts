@@ -13,6 +13,9 @@ export class QuizComment {
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Quiz.name })
     quiz: Quiz;
 
+    @Prop({ type: Number, required: true })
+    quizSegmentIndex: number;
+
     @Prop({ type: String, required: true })
     comment: string;
 

@@ -5,6 +5,7 @@ import { UpdateQuizCommentDto } from './dto/update-quiz-comment.dto';
 import { AuthGuard } from '../../common/guards/auth.guard';
 import { Response, TransformInterceptor } from '../../common/interceptors/transform.interceptors';
 import { QuizComment } from './entities/quiz-comment.entity';
+import { GetQuizDto } from './dto/get-quiz-comment.dto';
 
 @Controller('quiz-comments')
 export class QuizCommentsController {
@@ -24,9 +25,9 @@ export class QuizCommentsController {
         }
     }
 
-    @Get("/by-quiz/:quizId")
-    async findAllByQuiz(@Param("quizId") quizId: string): Promise<Response<QuizComment[]>> {
-        const comments = await this.quizCommentsService.findAllByQuiz(quizId);
+    @Post("/by-quiz-and-segment")
+    async findAllByQuizAndSegmentIndex(@Body() params: GetQuizDto): Promise<Response<QuizComment[]>> {
+        const comments = await this.quizCommentsService.findAllByQuizAndSegmentIndex(params);
 
         if (!comments) throw new BadGatewayException();
 
