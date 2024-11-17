@@ -38,7 +38,7 @@ export class QuizService {
             const skip = (page - 1) * limit;
 
             if (search) {
-                filters.name = { $regex: search, $options: 'i' };
+                filters.quizName = { $regex: search, $options: 'i' };
             }
 
             if (sortBy) {

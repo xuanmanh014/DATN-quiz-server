@@ -4,6 +4,8 @@ import { UpdateTopicDto } from './dto/update-topic.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Topic, TopicDocument } from './entities/topic.entity';
 import { Model } from 'mongoose';
+import { GetResponseDto } from '../../common/dtos/response.dto';
+import { GetDto } from '../../common/dtos/get.dto';
 
 @Injectable()
 export class TopicService {
@@ -24,11 +26,36 @@ export class TopicService {
         }
     }
 
-    async findAll(): Promise<Topic[]> {
+    async findAll(query: GetDto): Promise<GetResponseDto<Topic[]>> {
         try {
-            const topics = await this.topicModel.find();
+            const { search, sortBy, order, page = 1, limit = 10 } = query;
+            const filters: any = {};
+            const sortOptions = {};
+            const skip = (page - 1) * limit;
 
-            return topics;
+            if (search) {
+                filters.topicName = { $regex: search, $options: 'i' };
+            }
+
+            if (sortBy) {
+                sortOptions[sortBy] = order === 'desc' ? -1 : 1;
+            }
+
+            const topics = await this.topicModel.find()
+                .find(filters)
+                .sort(sortOptions)
+                .skip(skip)
+                .limit(limit)
+                .exec();
+
+            const totalItems = await this.topicModel.countDocuments(filters);
+
+            return {
+                data: topics,
+                totalItems,
+                totalPages: Math.ceil(totalItems / limit),
+                currentPage: page,
+            };
         } catch (error) {
             return null;
         }

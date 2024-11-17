@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, BadRequestException, Query } from '@nestjs/common';
 import { CreateTopicDto } from './dto/create-topic.dto';
 import { UpdateTopicDto } from './dto/update-topic.dto';
 import { Response, TransformInterceptor } from '../../common/interceptors/transform.interceptors';
 import { Topic } from './entities/topic.entity';
 import { TopicService } from './topic.service';
 import { AuthGuard } from '../../common/guards/auth.guard';
+import { GetDto } from '../../common/dtos/get.dto';
+import { GetResponseDto } from '../../common/dtos/response.dto';
 
 @Controller('topic')
 export class TopicController {
@@ -24,8 +26,8 @@ export class TopicController {
     }
 
     @Get()
-    async findAll(): Promise<Response<Topic[]>> {
-        const topics = await this.topicService.findAll();
+    async findAll(@Query() query: GetDto): Promise<Response<GetResponseDto<Topic[]>>> {
+        const topics = await this.topicService.findAll(query);
 
         if (!topics) throw new BadRequestException();
 
