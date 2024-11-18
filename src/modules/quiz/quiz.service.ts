@@ -45,15 +45,15 @@ export class QuizService {
                 sortOptions[sortBy] = order === 'desc' ? -1 : 1;
             }
 
-            const quizzes = await this.quizModel.find()
+            const quizzes = await this.quizModel
+                .find(filters)
                 .populate([
                     { path: "quizRecord", select: ["filePath", "fileName"] },
                     { path: "quizTopic" }
                 ])
-                .find(filters)
                 .sort(sortOptions)
                 .skip(skip)
-                .limit(limit)
+                // .limit(limit)
                 .exec();
 
             const totalItems = await this.quizModel.countDocuments(filters);
@@ -153,15 +153,15 @@ export class QuizService {
                 sortOptions[sortBy] = order === 'desc' ? -1 : 1;
             }
 
-            const quizzes = await this.quizModel.find()
+            const quizzes = await this.quizModel
+                .find(filters)
                 .populate([
                     { path: "quizRecord", select: ["filePath", "fileName"] },
                     { path: "quizTopic" }
                 ])
-                .find(filters)
                 .sort(sortOptions)
                 .skip(skip)
-                .limit(limit)
+                // .limit(limit)
                 .exec();
 
             const quizzesByTopic = quizzes.filter(quiz => quiz.quizTopic.topicName.toLowerCase().split(" ").join("") === topicName.split("-").join(""))

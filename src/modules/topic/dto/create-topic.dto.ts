@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString } from "class-validator"
+import { Upload } from "../../upload/entities/upload.entity"
 
 export class CreateTopicDto {
     @IsString({ message: "Please provide valid value" })
@@ -7,4 +8,7 @@ export class CreateTopicDto {
 
     @IsString({ message: "Please provide valid value" })
     topicDescriptions?: string
+
+    topicLevel?: string
+    topicImage?: Upload
 }

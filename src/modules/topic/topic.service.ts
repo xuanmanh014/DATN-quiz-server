@@ -18,6 +18,8 @@ export class TopicService {
         try {
             const newTopic = new this.topicModel(createTopicDto);
 
+            newTopic.topicImage = createTopicDto.topicImage;
+
             await newTopic.save();
 
             return newTopic;
@@ -41,11 +43,14 @@ export class TopicService {
                 sortOptions[sortBy] = order === 'desc' ? -1 : 1;
             }
 
-            const topics = await this.topicModel.find()
+            const topics = await this.topicModel
                 .find(filters)
+                .populate([
+                    { path: "topicImage", select: ["filePath", "fileName"] }
+                ])
                 .sort(sortOptions)
                 .skip(skip)
-                .limit(limit)
+                // .limit(limit)
                 .exec();
 
             const totalItems = await this.topicModel.countDocuments(filters);
@@ -63,7 +68,10 @@ export class TopicService {
 
     async findOne(id: string): Promise<Topic> {
         try {
-            const topic = await this.topicModel.findById(id);
+            const topic = await this.topicModel.findById(id)
+                .populate([
+                    { path: "topicImage", select: ["filePath", "fileName"] }
+                ]);
 
             if (!topic) throw new NotFoundException();
 
