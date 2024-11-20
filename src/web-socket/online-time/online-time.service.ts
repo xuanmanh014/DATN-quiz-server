@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Session, SessionDocument } from './entities/online-time.entity';
-import { User } from '../../modules/user/entities/user.entity';
 
 @Injectable()
 export class OnlineTimeService {
@@ -34,6 +33,18 @@ export class OnlineTimeService {
             lastSession.duration = now.getTime() - lastSession.connectedAt.getTime() + oldDuration;
             await lastSession.save();
         }
+    }
+
+    async getTotalOnlineTimeOfDay(userId: string): Promise<number> {
+        const session = await this.sessionModel.findOne({ userId });
+        let onlineTime = 0;
+        const now = new Date();
+
+        if (session) {
+            onlineTime = now.getTime() - session.connectedAt.getTime()
+        }
+
+        return onlineTime || 0;
     }
 
     async getTotalOnlineTime(userId: string): Promise<number> {

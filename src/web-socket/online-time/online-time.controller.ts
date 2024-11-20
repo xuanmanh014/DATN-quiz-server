@@ -8,6 +8,12 @@ export class OnlineTimeController {
     constructor(private readonly onlineTimeService: OnlineTimeService) { }
 
     @Get(':userId')
+    async getTotalOnlineTimeOfDay(@Param('userId') userId: string) {
+        const totalOnlineTime = await this.onlineTimeService.getTotalOnlineTimeOfDay(userId);
+        return { userId, totalOnlineTime };
+    }
+
+    @Get(':userId')
     async getTotalOnlineTime(@Param('userId') userId: string) {
         const totalOnlineTime = await this.onlineTimeService.getTotalOnlineTime(userId);
         return { userId, totalOnlineTime };
