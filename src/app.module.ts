@@ -10,6 +10,8 @@ import { ConfigModule } from '@nestjs/config';
 import { FavouriteQuizModule } from './modules/favourite-quiz/favourite-quiz.module';
 import { OnlineTimeModule } from './web-socket/online-time/online-time.module';
 import { QuizCommentsModule } from './modules/quiz-comments/quiz-comments.module';
+import { FlashCardModule } from './modules/flash-card/flash-card.module';
+import { FlashCardListModule } from './modules/flash-card-list/flash-card-list.module';
 
 @Module({
     imports: [
@@ -26,7 +28,9 @@ import { QuizCommentsModule } from './modules/quiz-comments/quiz-comments.module
         MailerModule,
         FavouriteQuizModule,
         OnlineTimeModule,
-        QuizCommentsModule
+        QuizCommentsModule,
+        FlashCardModule,
+        FlashCardListModule
     ],
 })
 export class AppModule { }
