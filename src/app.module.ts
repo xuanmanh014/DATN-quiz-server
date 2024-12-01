@@ -12,6 +12,7 @@ import { OnlineTimeModule } from './web-socket/online-time/online-time.module';
 import { QuizCommentsModule } from './modules/quiz-comments/quiz-comments.module';
 import { FlashCardModule } from './modules/flash-card/flash-card.module';
 import { FlashCardListModule } from './modules/flash-card-list/flash-card-list.module';
+import { LearnVideoModule } from './modules/learn-video/learn-video.module';
 
 @Module({
     imports: [
@@ -30,7 +31,8 @@ import { FlashCardListModule } from './modules/flash-card-list/flash-card-list.m
         OnlineTimeModule,
         QuizCommentsModule,
         FlashCardModule,
-        FlashCardListModule
+        FlashCardListModule,
+        LearnVideoModule
     ],
 })
 export class AppModule { }
